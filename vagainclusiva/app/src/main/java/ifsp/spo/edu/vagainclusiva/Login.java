@@ -21,6 +21,8 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.UUID;
+
 public class Login extends AppCompatActivity {
 
     private Button btnLogin;
@@ -31,6 +33,11 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         getSupportActionBar().hide();
 
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
         btnLogin = findViewById(R.id.btnLogin);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -44,7 +51,7 @@ public class Login extends AppCompatActivity {
 
                 Log.d("LOGIN", "Login:" + u.getText().toString() + " Password: " + p.getText().toString());
 
-                User user = new User(u.getText().toString(), p.getText().toString());
+                User user = new User(u.getText().toString(), p.getText().toString(), UUID.randomUUID().toString());
 
                 RequestQueue volleyQueue = Volley.newRequestQueue(Login.this);
                 String url = "http://10.0.2.2:8000/auth/login/";
@@ -87,4 +94,6 @@ public class Login extends AppCompatActivity {
             }
         });
     }
+
 }
+
