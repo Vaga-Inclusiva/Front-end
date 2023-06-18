@@ -3,20 +3,14 @@ package ifsp.spo.edu.vagainclusiva;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
 
-import android.app.Activity;
-import android.content.pm.PackageManager;
 import android.location.Location;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.mapbox.android.core.location.LocationEngine;
@@ -25,55 +19,42 @@ import com.mapbox.android.core.location.LocationEnginePriority;
 import com.mapbox.android.core.location.LocationEngineProvider;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
-import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
-import com.mapbox.mapboxsdk.camera.CameraUpdate;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
 
-import com.mapbox.mapboxsdk.*;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.plugins.locationlayer.LocationLayerPlugin;
 import com.mapbox.mapboxsdk.plugins.locationlayer.modes.CameraMode;
 import com.mapbox.mapboxsdk.plugins.locationlayer.modes.RenderMode;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Objects;
 
 import android.content.Intent;
-import android.content.res.Resources;
-import android.location.Location;
-import android.location.LocationRequest;
-import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
+@SuppressWarnings("RedundantCast")
 public class Map extends AppCompatActivity implements OnMapReadyCallback, LocationEngineListener, PermissionsListener, MapboxMap.OnMapClickListener {
 
     private MapView mapView;
     private MapboxMap map;
-    private PermissionsManager permissionsManager;
     private LocationEngine locationEngine;
     private LocationLayerPlugin locationLayerPlugin;
     private Location originLocation;
 
-    private Point originPosition;
-
-    private Point destinationPosition;
-
-    private Point vagaPosition;
+    //private Point vagaPosition;
 
     private Marker destinationMarker;
 
@@ -92,7 +73,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Locati
         // Rodando MapBox
         setContentView(R.layout.activity_map);
         mapView = (MapView) findViewById(R.id.mapView);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
@@ -115,93 +96,81 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Locati
         viewRedSquare = findViewById(R.id.viewRedSquare);
 
         // Trocar para Tela de Login
-        botaoEntrar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Map.this, TelaLogin.class);
-                startActivity(intent);
-            }
+        botaoEntrar.setOnClickListener(v -> {
+            Intent intent = new Intent(Map.this, TelaLogin.class);
+            startActivity(intent);
         });
 
         // Trocar para Tela de Cadastro
-        botaoCadastrar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Map.this, TelaCadastro.class);
-                startActivity(intent);
-            }
+        botaoCadastrar.setOnClickListener(v -> {
+            Intent intent = new Intent(Map.this, TelaCadastro.class);
+            startActivity(intent);
         });
 
         // Fechar a Janela das Cores
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textNaoAvaliado.setVisibility(View.GONE);
-                closeButton.setVisibility(View.GONE);
-                textBom.setVisibility(View.GONE);
-                textRuim.setVisibility(View.GONE);
-                topView.setVisibility(View.GONE);
-                viewLineOne.setVisibility(View.GONE);
-                viewLineTwo.setVisibility(View.GONE);
-                viewGraySquare.setVisibility(View.GONE);
-                viewYellowSquare.setVisibility(View.GONE);
-                viewGreenSquare.setVisibility(View.GONE);
-                viewRedSquare.setVisibility(View.GONE);
-            }
+        closeButton.setOnClickListener(v -> {
+            textNaoAvaliado.setVisibility(View.GONE);
+            closeButton.setVisibility(View.GONE);
+            textBom.setVisibility(View.GONE);
+            textRuim.setVisibility(View.GONE);
+            topView.setVisibility(View.GONE);
+            viewLineOne.setVisibility(View.GONE);
+            viewLineTwo.setVisibility(View.GONE);
+            viewGraySquare.setVisibility(View.GONE);
+            viewYellowSquare.setVisibility(View.GONE);
+            viewGreenSquare.setVisibility(View.GONE);
+            viewRedSquare.setVisibility(View.GONE);
         });
 
         // Mover os Botões de Cadastro/Login para cima e para Baixo
-        arrowButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isExpanded) {
-                    // Ocultar a view, os botões e mover a seta para baixo
-                    botaoCadastrar.setVisibility(View.GONE);
-                    botaoEntrar.setVisibility(View.GONE);
-                    arrowButton.setImageResource(R.drawable.arrow_up);
+        arrowButton.setOnClickListener(v -> {
+            if (isExpanded) {
+                // Ocultar a view, os botões e mover a seta para baixo
+                botaoCadastrar.setVisibility(View.GONE);
+                botaoEntrar.setVisibility(View.GONE);
+                arrowButton.setImageResource(R.drawable.arrow_up);
 
-                    // Seta
-                    ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) arrowButton.getLayoutParams();
-                    int arrowHeight = arrowButton.getHeight();
-                    int displacement_arrow = 390;
-                    params.bottomMargin = -arrowHeight - displacement_arrow; // Define a margem inferior negativa para posicionar o botão abaixo
-                    arrowButton.setLayoutParams(params);
+                // Seta
+                ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) arrowButton.getLayoutParams();
+                int arrowHeight = arrowButton.getHeight();
+                int displacement_arrow = 390;
+                params.bottomMargin = -arrowHeight - displacement_arrow; // Define a margem inferior negativa para posicionar o botão abaixo
+                arrowButton.setLayoutParams(params);
 
-                    // Texto "Faça login ou cadastre-se"
-                    ConstraintLayout.LayoutParams textParams = (ConstraintLayout.LayoutParams) viewLoginCadastro.getLayoutParams();
-                    int displacement_text = 450;
-                    textParams.bottomMargin = -displacement_text;
-                    viewLoginCadastro.setLayoutParams(textParams);
+                // Texto "Faça login ou cadastre-se"
+                ConstraintLayout.LayoutParams textParams = (ConstraintLayout.LayoutParams) viewLoginCadastro.getLayoutParams();
+                int displacement_text = 450;
+                textParams.bottomMargin = -displacement_text;
+                viewLoginCadastro.setLayoutParams(textParams);
 
-                    // Background View
-                    ConstraintLayout.LayoutParams backgroundParams = (ConstraintLayout.LayoutParams) backgroundView.getLayoutParams();
-                    int displacement_background = 340;
-                    backgroundParams.bottomMargin = -displacement_background;
-                    backgroundView.setLayoutParams(backgroundParams);
-                } else {
-                    // Mostrar a view, os botões e mover a seta para cima
-                    botaoCadastrar.setVisibility(View.VISIBLE);
-                    botaoEntrar.setVisibility(View.VISIBLE);
-                    arrowButton.setImageResource(R.drawable.arrow_down);
+                // Background View
+                ConstraintLayout.LayoutParams backgroundParams = (ConstraintLayout.LayoutParams) backgroundView.getLayoutParams();
+                int displacement_background = 340;
+                backgroundParams.bottomMargin = -displacement_background;
+                backgroundView.setLayoutParams(backgroundParams);
+            } else {
+                // Mostrar a view, os botões e mover a seta para cima
+                botaoCadastrar.setVisibility(View.VISIBLE);
+                botaoEntrar.setVisibility(View.VISIBLE);
+                arrowButton.setImageResource(R.drawable.arrow_down);
 
-                    // Seta
-                    ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) arrowButton.getLayoutParams();
-                    params.bottomMargin = 0; // Define a margem inferior padrão
-                    arrowButton.setLayoutParams(params);
+                // Seta
+                ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) arrowButton.getLayoutParams();
+                params.bottomMargin = 0; // Define a margem inferior padrão
+                arrowButton.setLayoutParams(params);
 
-                    // Texto "Faça login ou cadastre-se"
-                    ConstraintLayout.LayoutParams textParams = (ConstraintLayout.LayoutParams) viewLoginCadastro.getLayoutParams();
-                    textParams.bottomMargin = 0; // Define a margem inferior padrão para a TextView
-                    viewLoginCadastro.setLayoutParams(textParams);
+                // Texto "Faça login ou cadastre-se"
+                ConstraintLayout.LayoutParams textParams = (ConstraintLayout.LayoutParams) viewLoginCadastro.getLayoutParams();
+                textParams.bottomMargin = 0; // Define a margem inferior padrão para a TextView
+                viewLoginCadastro.setLayoutParams(textParams);
 
-                    // Background View
-                    ConstraintLayout.LayoutParams backgroundParams = (ConstraintLayout.LayoutParams) backgroundView.getLayoutParams();
-                    int displacement_background = 0;
-                    backgroundParams.bottomMargin = -displacement_background;
-                    backgroundView.setLayoutParams(backgroundParams);
-                }
-                isExpanded = !isExpanded;
+                // Background View
+                ConstraintLayout.LayoutParams backgroundParams = (ConstraintLayout.LayoutParams) backgroundView.getLayoutParams();
+                int displacement_background = 0;
+                backgroundParams.bottomMargin = -displacement_background;
+                backgroundView.setLayoutParams(backgroundParams);
             }
+            isExpanded = !isExpanded;
         });
     }
 
@@ -209,13 +178,13 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Locati
 
         Log.e("VAGAS", "getting vagas...");
 
-        Double latitude = location.getLatitude();
-        Double longitude = location.getLongitude();
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
 
-        Log.e("VAGAS", "LAT" + latitude.toString());
-        Log.e("VAGAS", "LON" + longitude.toString());
+        Log.e("VAGAS", "LAT" + latitude);
+        Log.e("VAGAS", "LON" + longitude);
 
-        String url = "http://18.205.155.235:8000/vagas/?latitude=" + latitude.toString() + "&longitude=" + longitude.toString();
+        String url = "http://18.205.155.235:8000/vagas/?latitude=" + latitude + "&longitude=" + longitude;
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
 
@@ -224,46 +193,40 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Locati
                 Request.Method.GET,
                 url,
                 null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        Log.e("VOLLEY", response.toString());
+                response -> {
+                    Log.e("VOLLEY", response.toString());
 
-                        try {
+                    try {
 
-                            map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),
-                                    location.getLongitude()), 15.5));
-                           // JSONArray jsonArray = new JSONArray(response); // 'response' é a resposta JSON recebida
+                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),
+                                location.getLongitude()), 15.5));
+                       // JSONArray jsonArray = new JSONArray(response); // 'response' é a resposta JSON recebida
 
-                            for (int i = 0; i < response.length(); i++) {
-                                JSONObject jsonObject = response.getJSONObject(i);
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject jsonObject = response.getJSONObject(i);
 
-                                double lat = jsonObject.getDouble("latitude");
-                                double lng = jsonObject.getDouble("longitude");
+                            double lat = jsonObject.getDouble("latitude");
+                            double lng = jsonObject.getDouble("longitude");
 
-                                LatLng vagaLatLng = new LatLng(lat, lng);
+                            LatLng vagaLatLng = new LatLng(lat, lng);
 
-                                map.addMarker(new MarkerOptions().position(vagaLatLng));
+                            map.addMarker(new MarkerOptions().position(vagaLatLng));
 
 
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
-
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("VOLLEY", error.toString());
 
-                        CharSequence text = "Erro";
-                        int duration = Toast.LENGTH_SHORT;
+                }, error -> {
+                    Log.e("VOLLEY", error.toString());
 
-                        Toast toast = Toast.makeText(Map.this, text, duration);
-                        toast.show();
+                    CharSequence text = "Erro";
+                    int duration = Toast.LENGTH_SHORT;
 
-                    }
+                    Toast toast = Toast.makeText(Map.this, text, duration);
+                    toast.show();
+
                 }) {
                 };
 
@@ -284,7 +247,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Locati
             initializeLocationLayer();
 
         } else {
-            permissionsManager = new PermissionsManager((this));
+            PermissionsManager permissionsManager = new PermissionsManager((this));
             permissionsManager.requestLocationPermissions(this);
         }
     }
@@ -372,7 +335,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Locati
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
     }
@@ -416,8 +379,8 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Locati
             map.removeMarker(destinationMarker);
         }
         destinationMarker = map.addMarker(new MarkerOptions().position(point));
-        destinationPosition = Point.fromLngLat(point.getLongitude(),point.getLatitude());
-        originPosition = Point.fromLngLat(originLocation.getLongitude(), originLocation.getLatitude());
+        //Point destinationPosition = Point.fromLngLat(point.getLongitude(), point.getLatitude());
+        //Point originPosition = Point.fromLngLat(originLocation.getLongitude(), originLocation.getLatitude());
 
         //volley request
         getVagas(originLocation);

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".Map">
 
-    <!-- Configurações do Mapbox -->
+
     <com.mapbox.mapboxsdk.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
@@ -113,6 +113,7 @@
         mapbox:layout_constraintVertical_bias="0.073" />
 
     <ImageView
+        android:contentDescription="@string/arrowdown"
         android:id="@+id/arrowDown"
         android:layout_width="43dp"
         android:layout_height="27dp"
@@ -130,10 +131,9 @@
         android:id="@+id/viewLoginCadastro"
         android:layout_width="301dp"
         android:layout_height="27dp"
-        android:drawableLeft="@drawable/icon_vaga_inclusiva"
         android:fontFamily="@font/jura"
-        android:lineHeight="21dp"
-        android:text="  Faça login ou cadastre-se"
+        android:lineSpacingExtra="21dp"
+        android:text="@string/faca_login_ou_cadastre_se"
         android:textColor="@color/primary"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -142,7 +142,8 @@
         mapbox:layout_constraintEnd_toEndOf="parent"
         mapbox:layout_constraintStart_toStartOf="parent"
         mapbox:layout_constraintTop_toTopOf="parent"
-        mapbox:layout_constraintVertical_bias="0.774" />
+        mapbox:layout_constraintVertical_bias="0.774"
+        mapbox:drawableLeftCompat="@drawable/icon_vaga_inclusiva" />
 
     <Button
         android:id="@+id/botaocadastrar"
@@ -152,7 +153,7 @@
         android:backgroundTint="@color/primary"
         android:fontFamily="@font/jura"
         android:text="@string/cadastrar"
-        android:textSize="18dp"
+        android:textSize="18sp"
         android:textStyle="bold"
         mapbox:layout_constraintBottom_toBottomOf="parent"
         mapbox:layout_constraintEnd_toEndOf="parent"
@@ -167,8 +168,8 @@
         android:layout_marginTop="76dp"
         android:backgroundTint="@color/primary"
         android:fontFamily="@font/jura"
-        android:text="Entrar"
-        android:textSize="18dp"
+        android:text="@string/entrar"
+        android:textSize="18sp"
         android:textStyle="bold"
         mapbox:layout_constraintBottom_toBottomOf="parent"
         mapbox:layout_constraintEnd_toEndOf="parent"
@@ -180,7 +181,7 @@
         android:id="@+id/textNaoAvaliado"
         android:layout_width="95dp"
         android:layout_height="16dp"
-        android:text="  Não avaliado"
+        android:text="@string/nao_avaliado"
         android:textStyle="bold"
         mapbox:layout_constraintBottom_toBottomOf="parent"
         mapbox:layout_constraintEnd_toEndOf="parent"
@@ -193,7 +194,7 @@
         android:id="@+id/textBom"
         android:layout_width="wrap_content"
         android:layout_height="16dp"
-        android:text="Bom"
+        android:text="@string/bom"
         android:textStyle="bold"
         mapbox:layout_constraintBottom_toBottomOf="parent"
         mapbox:layout_constraintEnd_toEndOf="parent"
@@ -206,7 +207,7 @@
         android:id="@+id/textRuim"
         android:layout_width="wrap_content"
         android:layout_height="16dp"
-        android:text="Ruim"
+        android:text="@string/ruim"
         android:textStyle="bold"
         mapbox:layout_constraintBottom_toBottomOf="parent"
         mapbox:layout_constraintEnd_toEndOf="parent"
@@ -216,6 +217,7 @@
         mapbox:layout_constraintVertical_bias="0.069" />
 
     <ImageView
+        android:contentDescription="@string/closebutton"
         android:id="@+id/closeButton"
         android:layout_width="36dp"
         android:layout_height="30dp"

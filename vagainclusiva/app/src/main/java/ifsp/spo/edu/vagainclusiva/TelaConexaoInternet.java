@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.Toast;
 import android.content.Intent;
 
+import java.util.Objects;
+
 public class TelaConexaoInternet extends AppCompatActivity {
 
     public void requestReadPhoneStatePermission(Activity activity)
@@ -41,7 +43,7 @@ public class TelaConexaoInternet extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_conexao_internet);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         // Verifica a conexão com a Internet
         if (isConnected()) {

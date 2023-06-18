@@ -7,6 +7,7 @@
     tools:context=".TelaGeolocalizacao">
 
     <ImageView
+        android:contentDescription="@string/image3"
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"
         android:layout_height="729dp"
@@ -18,7 +19,6 @@
         app:srcCompat="@drawable/imagemfundochairman" />
 
     <LinearLayout
-        android:id="@+id/quadro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|bottom"
@@ -33,7 +33,7 @@
         app:layout_constraintVertical_bias="0.216">
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:contentDescription="@string/imageview4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/imagemlocalizacao" />
@@ -44,7 +44,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:gravity="center"
-            android:text="Olá, visitante! Para acessar o aplicativo VagaInclusiva, é necessário que você esteja permita a função de geolocalização no seu dispositivo Android."
+            android:text="@string/texto_grande_boas_vindas"
             android:textColor="#FFFFFF"
             android:textSize="18sp" />
 

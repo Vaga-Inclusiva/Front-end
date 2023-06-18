@@ -1,8 +1,8 @@
 package ifsp.spo.edu.vagainclusiva;
 
 public class UserLogin {
-    private String username;
-    private String password;
+    private final String username;
+    private final String password;
 
     public UserLogin(String email, String senha) {
         this.username = email;
