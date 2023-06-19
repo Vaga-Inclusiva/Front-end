@@ -54,6 +54,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback, Locati
     private LocationLayerPlugin locationLayerPlugin;
     private Location originLocation;
 
+    
     //private Point vagaPosition;
 
     private Marker destinationMarker;
